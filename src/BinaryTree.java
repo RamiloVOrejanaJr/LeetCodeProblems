@@ -139,4 +139,25 @@ public class BinaryTree {
 
         return false;
     }
+
+    //Problem 226
+    public TreeNode invertTree(TreeNode root) {
+        //Exception case - if tree does not exist
+        if (root == null) return root;
+
+        //Base case - no child nodes
+        if ( (root.left == null) && (root.right == null) ) return root;
+
+        //Recursing case - with child nodes
+        //first invert current node
+        TreeNode temp = root.left;
+        root.left = root.right;
+        root.right = temp;
+
+        //then invert existing children node
+        if (root.left != null) root.left = invertTree(root.left);
+        if (root.right != null) root.right = invertTree(root.right);
+
+        return root;
+    }
 }
