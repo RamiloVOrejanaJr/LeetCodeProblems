@@ -67,6 +67,41 @@ public class BinaryTree {
         return 0;
     }
 
+    //Problem 111
+    //--TODO-- NOT beats 100% time complexity
+    public int minDepth(TreeNode root) {
+        // Overall concept: add 1 for each node reached, return 1 at base case (no child node)
+
+        //Exception case: tree doesn't exist
+        if (root == null){
+            return 0;
+        }
+
+        //4 cases:
+        //I. both children exist - return maximum depth of each child node, return which one is bigger
+        if ( (root.left != null) && (root.right != null) ){
+            return (Math.min( minDepth(root.left), minDepth(root.right) )) + 1;
+        }
+
+        //II. only left child exist - return max depth
+        if ( (root.left != null) && (root.right == null) ){
+            return minDepth(root.left) + 1;
+        }
+
+        //III. only right child exists - return max depth
+        if ( (root.left == null) && (root.right != null) ){
+            return minDepth(root.right) + 1;
+        }
+
+        //IV. no child exists (base case) - return 1
+        if ( (root.left == null) && (root.right == null) ){
+            return 1;
+        }
+
+        return 0;
+
+    }
+
     //Problem 112
     public boolean hasPathSum(TreeNode root, int targetSum) {
         //Overall concept: keep recursing through path until leaf node is reached, if targetSum - root.val
