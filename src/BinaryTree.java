@@ -66,4 +66,42 @@ public class BinaryTree {
 
         return 0;
     }
+
+    //Problem 112
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+        //Overall concept: keep recursing through path until leaf node is reached, if targetSum - root.val
+        //is exactly 0 while on a leaf node, the tree hasPathSum
+
+        //Exception case: if tree doesn't exist
+        if (root == null){
+            return false;
+        }
+
+        //3 cases where the node is not a leaf node
+        //I. both children exist
+        if ( (root.left != null) && (root.right != null) ){
+            return ( hasPathSum(root.left, targetSum - root.val)
+                    || hasPathSum(root.right, targetSum - root.val));
+        }
+
+        //II. only left child exist
+        if ( (root.left != null) && (root.right == null) ){
+            return (hasPathSum(root.left, targetSum - root.val));
+        }
+
+        //III. only right child exists
+        if ( (root.left == null) && (root.right != null) ){
+            return (hasPathSum(root.right, targetSum - root.val));
+        }
+
+        //1 case where node is a leaf node
+        //IV. no child exists (base case) - return 1
+        if ( (root.left == null) && (root.right == null) ){
+            if ((targetSum - root.val) == 0){
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
