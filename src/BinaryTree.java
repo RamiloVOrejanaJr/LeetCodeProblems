@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class BinaryTree {
 
     //Problem 100
@@ -31,6 +34,64 @@ public class BinaryTree {
             if (!isSameTree(p.right, q.right)) return false;
         }
         return true;
+    }
+
+    //Problem 101
+    public boolean isSymmetric(TreeNode root) {
+        //handles root layer with only one node
+
+        //only reason why this function exists is because
+        //we need a function to accept the root node as only 1 parameter,
+        //creating a helper function to assist with handling a node pair as 2 parameters is better
+        return isSymmetricPair(root.left, root.right);
+    }
+
+    //Helper for Problem 101
+    public boolean isSymmetricPair(TreeNode left, TreeNode right){
+        //handles non-root layers with pairs of nodes
+
+        //if both are null, tree remains symmetrical
+        if ( (left == null) && (right == null) ) return true;
+
+        //if only one is null, automatically asymmetrical
+        if ( (left == null) ^ (right == null) ) return false;
+
+        //check if values are identical
+        if (left.val != right.val) return false;
+
+        //if yes, handle children
+        //pair up left node's left child and right node right child to handle mirroring, and vise versa
+        //I.E.: left.left == right.right, left.right == right.left: two(2) children pairs
+        return isSymmetricPair(left.left, right.right) && isSymmetricPair(left.right, right.left);
+    }
+
+    //Problem 102
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> ans = new ArrayList<>();
+        List<TreeNode> tree = new ArrayList<>();
+        tree.add(root);
+        if (root == null) return ans;
+        return levelOrderHelper(ans, tree);
+    }
+
+    //Helper for Problem 102
+    public List<List<Integer>> levelOrderHelper (List<List<Integer>> list, List<TreeNode> nodes){
+        List<Integer> values = new ArrayList<>();
+        List<TreeNode> nextNodes = new ArrayList<>();
+
+        //assume that list is the answer so far, and nodes is a list of all nodes in a certain level
+        for (TreeNode node: nodes){
+            values.add(node.val);
+            if(node.left != null) nextNodes.add(node.left);
+            if(node.right != null) nextNodes.add(node.right);
+        }
+        list.add(values);
+
+        if(!nextNodes.isEmpty()){
+            return levelOrderHelper(list, nextNodes);
+        }
+
+        return list;
     }
 
     //Problem 104
@@ -159,35 +220,6 @@ public class BinaryTree {
         if (root.right != null) root.right = invertTree(root.right);
 
         return root;
-    }
-
-    //Problem 101
-    public boolean isSymmetric(TreeNode root) {
-        //handles root layer with only one node
-
-        //only reason why this function exists is because
-        //we need a function to accept the root node as only 1 parameter,
-        //creating a helper function to assist with handling a node pair as 2 parameters is better
-        return isSymmetricPair(root.left, root.right);
-    }
-
-    //Helper for Problem 101
-    public boolean isSymmetricPair(TreeNode left, TreeNode right){
-        //handles non-root layers with pairs of nodes
-
-        //if both are null, tree remains symmetrical
-        if ( (left == null) && (right == null) ) return true;
-
-        //if only one is null, automatically asymmetrical
-        if ( (left == null) ^ (right == null) ) return false;
-
-        //check if values are identical
-        if (left.val != right.val) return false;
-
-        //if yes, handle children
-        //pair up left node's left child and right node right child to handle mirroring, and vise versa
-        //I.E.: left.left == right.right, left.right == right.left: two(2) children pairs
-        return isSymmetricPair(left.left, right.right) && isSymmetricPair(left.right, right.left);
     }
 
 
