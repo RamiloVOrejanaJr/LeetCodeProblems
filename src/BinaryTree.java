@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class BinaryTree {
@@ -89,6 +90,49 @@ public class BinaryTree {
 
         if(!nextNodes.isEmpty()){
             return levelOrderHelper(list, nextNodes);
+        }
+
+        return list;
+    }
+
+    //Problem 1.3
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+
+        List<List<Integer>> ans = new ArrayList<>();
+        List<TreeNode> tree = new ArrayList<>();
+        tree.add(root);
+
+        if (root == null) return ans;
+
+        return levelOrderHelper(ans, tree, false);
+    }
+
+    //uses same logic as non-zigzag levelOrder but reverses on each layer
+    public List<List<Integer>> levelOrderHelper (List<List<Integer>> list, List<TreeNode> nodes, boolean reverse){
+        List<Integer> values = new ArrayList<>();
+        List<TreeNode> nextNodes = new ArrayList<>();
+
+        if (reverse) Collections.reverse(nodes);
+
+        //assume that list is the answer so far, and nodes is a list of all nodes in a certain level
+        for (TreeNode node: nodes){
+            values.add(node.val);
+
+            if (reverse){
+                if(node.right != null) nextNodes.add(node.right);
+                if(node.left != null) nextNodes.add(node.left);
+                continue;
+            }
+
+            if(node.left != null) nextNodes.add(node.left);
+            if(node.right != null) nextNodes.add(node.right);
+        }
+
+        if (reverse) Collections.reverse(nextNodes);
+        list.add(values);
+
+        if(nextNodes.size() > 0){
+            return levelOrderHelper(list, nextNodes, !reverse);
         }
 
         return list;
@@ -204,7 +248,7 @@ public class BinaryTree {
     //Problem 226
     public TreeNode invertTree(TreeNode root) {
         //Exception case - if tree does not exist
-        if (root == null) return root;
+        if (root == null) return null;
 
         //Base case - no child nodes
         if ( (root.left == null) && (root.right == null) ) return root;
