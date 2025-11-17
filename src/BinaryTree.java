@@ -95,7 +95,7 @@ public class BinaryTree {
         return list;
     }
 
-    //Problem 1.3
+    //Problem 103
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
 
         List<List<Integer>> ans = new ArrayList<>();
@@ -170,6 +170,40 @@ public class BinaryTree {
         }
 
         return 0;
+    }
+
+    //Problem 107
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+
+        List<List<Integer>> ans = new ArrayList<>();
+        List<TreeNode> tree = new ArrayList<>();
+        tree.add(root);
+
+        if (root == null) return ans;
+
+        return levelOrderBottomHelper(ans, tree);
+    }
+
+    //Helper for Problem 107
+    public List<List<Integer>> levelOrderBottomHelper (List<List<Integer>> list, List<TreeNode> nodes){
+        List<Integer> values = new ArrayList<>();
+        List<TreeNode> nextNodes = new ArrayList<>();
+
+        //assume that list is the answer so far, and nodes is a list of all nodes in a certain level
+        for (TreeNode node: nodes){
+            values.add(node.val);
+            if(node.left != null) nextNodes.add(node.left);
+            if(node.right != null) nextNodes.add(node.right);
+        }
+
+
+        if(nextNodes.size() > 0){
+            list = levelOrderBottomHelper(list, nextNodes);
+        }
+
+        list.add(values);
+
+        return list;
     }
 
     //Problem 111
